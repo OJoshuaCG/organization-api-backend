@@ -108,7 +108,7 @@ return new class extends Migration
             $table->unsignedInteger('user_role_id');
             $table->foreign('user_role_id')->references('id')->on('cat_user_roles');
             
-            $table->unique(['module_endpoint_id', 'user_role_id']);
+            $table->unique(['module_endpoint_id', 'user_role_id'], 'me_req_roles_unique');
         });
 
         Schema::create('company_user_tags', function (Blueprint $table) {
