@@ -17,12 +17,12 @@ class CompanyRepository implements CompanyRepositoryInterface
             $query->where('name', 'like', "%{$filters['name']}%");
         }
 
-        if (isset($filters['is_active'])) {
-            $query->where('is_active', $filters['is_active']);
-        }
-
         if (isset($filters['organization_id'])) {
             $query->where('organization_id', $filters['organization_id']);
+        }
+
+        if (isset($filters['is_active'])) {
+            $query->where('is_active', $filters['is_active']);
         }
 
         if (isset($filters['order_by'])) {
@@ -34,15 +34,9 @@ class CompanyRepository implements CompanyRepositoryInterface
         return $query->with(['organization', 'creator', 'updater'])->paginate($perPage);
     }
 
-    public function getByOrganization(int $organizationId, array $filters = [], int $perPage = 15): LengthAwarePaginator
-    {
-        $filters['organization_id'] = $organizationId;
-        return $this->getAll($filters, $perPage);
-    }
-
     public function findById(int $id): ?Company
     {
-        return Company::with(['organization', 'companyModules.module', 'creator', 'updater'])->find($id);
+        return Company::with(['organization', 'users', 'creator', 'updater'])->find($id);
     }
 
     public function create(array $data): Company
@@ -72,10 +66,13 @@ class CompanyRepository implements CompanyRepositoryInterface
         return $company->delete();
     }
 
-    public function getActiveByOrganization(int $organizationId): Collection
+    public function getByOrganization(int $organizationId): Collection
     {
-        return Company::active()
-            ->byOrganization($organizationId)
-            ->get();
+        return Company::byOrganization($organizationId)->get();
+    }
+
+    public function getActive(): Collection
+    {
+        return Company::active()->get();
     }
 }

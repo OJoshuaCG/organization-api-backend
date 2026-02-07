@@ -8,10 +8,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
 interface CompanyRepositoryInterface
 {
     public function getAll(array $filters = [], int $perPage = 15): LengthAwarePaginator;
-    public function getByOrganization(int $organizationId, array $filters = [], int $perPage = 15): LengthAwarePaginator;
     public function findById(int $id): ?\App\Models\Company;
     public function create(array $data): \App\Models\Company;
     public function update(int $id, array $data): bool;
     public function delete(int $id): bool;
-    public function getActiveByOrganization(int $organizationId): Collection;
+    public function getByOrganization(int $organizationId): Collection;
+    public function getActive(): Collection;
 }
