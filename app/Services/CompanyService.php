@@ -44,4 +44,19 @@ class CompanyService
     {
         return $this->companyRepository->getActive();
     }
+
+    public function getTenantCompanies(array $filters = [], int $perPage = 15)
+    {
+        return $this->companyRepository->getTenantCompanies($filters, $perPage);
+    }
+
+    public function createForTenant(array $data)
+    {
+        return $this->companyRepository->createForTenant($data);
+    }
+
+    public function assignModules(int $companyId, array $moduleIds, bool $isActive = true): void
+    {
+        $this->companyRepository->assignModules($companyId, $moduleIds, $isActive);
+    }
 }

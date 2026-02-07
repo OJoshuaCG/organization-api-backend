@@ -20,6 +20,12 @@ class CompanyResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'is_active' => $this->is_active,
+            'modules' => $this->whenLoaded('companyModules', fn () => $this->companyModules->map(fn ($cm) => [
+                'id' => $cm->module_id,
+                'name' => $cm->module->name,
+                'is_active' => $cm->is_active,
+            ])),
+            'tags_count' => $this->whenCounted('companyUserTags'),
             'users_count' => $this->whenCounted('users'),
             'modules_count' => $this->whenCounted('companyModules'),
             'created_by' => $this->whenLoaded('creator', fn () => [

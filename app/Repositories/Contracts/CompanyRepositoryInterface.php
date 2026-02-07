@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Models\Company;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -14,4 +15,7 @@ interface CompanyRepositoryInterface
     public function delete(int $id): bool;
     public function getByOrganization(int $organizationId): Collection;
     public function getActive(): Collection;
+    public function getTenantCompanies(array $filters = [], int $perPage = 15): LengthAwarePaginator;
+    public function createForTenant(array $data): Company;
+    public function assignModules(int $companyId, array $moduleIds, bool $isActive = true): void;
 }
