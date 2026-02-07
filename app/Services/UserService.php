@@ -67,4 +67,36 @@ class UserService
     {
         return $this->userRepository->getActive();
     }
+
+    public function getByOrganizationWithFilters(int $organizationId, array $filters = [], int $perPage = 15)
+    {
+        return $this->userRepository->getByOrganizationWithFilters($organizationId, $filters, $perPage);
+    }
+
+    public function getByCompanyWithFilters(int $companyId, array $filters = [], int $perPage = 15)
+    {
+        return $this->userRepository->getByCompanyWithFilters($companyId, $filters, $perPage);
+    }
+
+    public function createForTenant(array $data)
+    {
+        if (isset($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        $user = \Illuminate\Support\Facades\Auth::user();
+        $data['organization_id'] = $user->organization_id;
+
+        return $this->userRepository->create($data);
+    }
+
+    public function assignCompanyAccess(int $userId, int $companyId, bool $enabled = true): void
+    {
+        $this->userRepository->assignCompanyAccess($userId, $companyId, $enabled);
+    }
+
+    public function assignPermission(int $userId, int $moduleId, int $permissionId): void
+    {
+        $this->userRepository->assignPermission($userId, $moduleId, $permissionId);
+    }
 }

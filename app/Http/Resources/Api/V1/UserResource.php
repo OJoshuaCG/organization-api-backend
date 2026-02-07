@@ -35,6 +35,22 @@ class UserResource extends JsonResource
             'whmcs_id' => $this->whmcs_id,
             'phone_extension' => $this->phone_extension,
             'is_2fa_enabled' => $this->is_2fa_enabled,
+            'company_access' => $this->whenLoaded('usersCompanyAccess', fn () => $this->usersCompanyAccess->map(fn ($access) => [
+                'company_id' => $access->company_id,
+                'company_name' => $access->company?->name,
+                'enabled' => $access->enabled,
+            ])),
+            'permissions' => $this->whenLoaded('usersModulesPermissions', fn () => $this->usersModulesPermissions->map(fn ($perm) => [
+                'module_id' => $perm->module_id,
+                'module_name' => $perm->module?->name,
+                'permission_id' => $perm->permission_id,
+                'permission' => $perm->permission?->permission,
+            ])),
+            'tags' => $this->whenLoaded('userTags', fn () => $this->userTags->map(fn ($tag) => [
+                'id' => $tag->companyUserTag?->id,
+                'name' => $tag->companyUserTag?->name,
+                'is_primary' => $tag->is_primary,
+            ])),
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
             'deleted_at' => $this->deleted_at?->toIso8601String(),

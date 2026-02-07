@@ -16,4 +16,8 @@ interface UserRepositoryInterface
     public function getByOrganization(int $organizationId): Collection;
     public function getByCompany(int $companyId): Collection;
     public function getActive(): Collection;
+    public function getByOrganizationWithFilters(int $organizationId, array $filters = [], int $perPage = 15): LengthAwarePaginator;
+    public function getByCompanyWithFilters(int $companyId, array $filters = [], int $perPage = 15): LengthAwarePaginator;
+    public function assignCompanyAccess(int $userId, int $companyId, bool $enabled = true): void;
+    public function assignPermission(int $userId, int $moduleId, int $permissionId): void;
 }
